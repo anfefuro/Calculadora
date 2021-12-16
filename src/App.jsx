@@ -2,19 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 //import Card from './components/Card'
 
-
 const App = () => {
 
-    const {register, errors, handleSubmit} = useForm();
-
-    const validate = (data) => {
-            console.log(data)
-                
-    }
-    
-    const firstBox = register('firstBox', { required: true})
-    const secondBox = register('secondBox', { required: true})
-    const thirdBox = register('thirdBox', { required: true})
+    const {register, watch, handleSubmit} = useForm ();
+    //const { register, control, handleSubmit } = useForm();
 
     const [salaryBase, setSalaryBase] = useState(0);
     const [sumPayForExtraHours, setSumPayForExtraHours] = useState(0);
@@ -35,11 +26,11 @@ const App = () => {
     const [semestralChoice, setSemestralChoice] = useState (0);
 
     const salary = (event) => {
-        setSalaryBase(event.target.value);     
+        setSalaryBase(event.target.value);
     }
 
     const extraHours = (event) => {
-        setSumPayForExtraHours(parseInt(event.target.value));
+        setSumPayForExtraHours(event.target.value);
     }
 
     const payForBonus = (event) => {
@@ -109,15 +100,21 @@ const App = () => {
     }, [semestralChoice, lounchAllowance, transAllowance, extraHoursForSem, recessBonusPayForSem, christmasBonus, salaryBase, profitSharing, christmas, totalServicesBonus, totalSemestralBonus])
     //___________________________________________________
 
+    console.log(watch())
+
+    //const firstBox = watch("firstBox");
+    //const secondBox = watch("secondBox");
+    //const thirdBox = watch("thirdBox");
+
     return (
         <div className="container mx-auto w-3/5 border mb-5 rounded">
             <h1 className="text-2xl p-5 text-center border text-gray-900 bg-gray-200 font-bold">CALCULO PRIMAS SEMESTRALES SEGUNDO SEMESTRE 2021</h1>
             <div className="flex flex-wrap">
-                <form onSubmit={handleSubmit(validate)} className="w-full sm:w-1/2 text-center p-5">
+                <form onSubmit={handleSubmit ((data) => console.log(data))} className="w-full sm:w-1/2 text-center p-5">
                     <label className="text-lg font-bold pt-5 m-2 text-center text-gray-600" htmlFor="firstBox">Sueldo básico a Noviembre 30 (*)</label>
                     <br></br>
-                    <input  className="border shadow m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" name="firstBox" id="firstBox" placeholder="0"/> 
-                    <span>{errors}</span>
+                    <input {...register("firstBox")} onChange={salary} className="border shadow m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="0"/> 
+                    <p className="text-red-500 text-xs italic">{salaryBase == false ? "Ingrese un valor numerico" : ""}</p>
                     <br></br>
 
                     <h1 className="font-bold text-2xl pt-5 text-gray-600">VALORES PROPORCIONALES</h1>
@@ -125,17 +122,16 @@ const App = () => {
 
                     <label className="text-lg font-bold pt-5 m-2 text-center text-gray-600" htmlFor="secondBox">Suma de lo pagado por horas extras en el semestre</label>
                     <br></br>
-                    <input onChange={(e) => {secondBox.onChange(e); extraHours(e);}} className="shadow border m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" name="secondBox" id="secondBox" placeholder="0"/> 
-                    <span>{errors}</span>
+                    <input {...register("secondBox")} onChange={extraHours} className="shadow border m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="0"/> 
+                    <p className="text-red-500 text-xs italic">{sumPayForExtraHours == false ? "Ingrese un valor numerico" : ""}</p>
                     <br></br>
                     <br></br>
 
                     <label className="text-lg font-bold pt-5 m-2 text-center text-gray-600" htmlFor="thirdBox">Valor pagado por prima de vacaciones en el semestre
                     (JULIO 1 A DICIEMBRE 31)</label>
                     <br></br>
-                    <input onChange={(e) => {thirdBox.onChange(e); payForBonus(e);}} className="shadow border m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" name="thirdBox" id="thirdBox" placeholder="0"/> 
-                    <span>{errors}</span>
-                    <button type="submit">Calcular</button>
+                    <input {...register("thirdBox")} onChange={payForBonus} className="shadow border m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="0"/> 
+                    <p className="text-red-500 text-xs italic">{payForBonusRecess == false ? "Ingrese un valor numerico" : ""}</p>
                 </form>
                 <div className="w-full sm:w-1/2 pb-5 px-3">
                     <h1 className="text-lg font-bold pt-2 m-2 text-center text-gray-600">Subsidio de almuerzo con efecto prestacional</h1>
