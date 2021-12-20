@@ -3,13 +3,17 @@ import { useForm } from 'react-hook-form';
 
 const App = () => {
 
+    const date = new Date();
+    const semestralChoice = false;
+    const christmas = 548696;
+
     const {register, watch, handleSubmit} = useForm ();
 
     const [salaryBase, setSalaryBase] = useState(0);
     const [sumPayForExtraHours, setSumPayForExtraHours] = useState(0);
     const [payForBonusRecess, setPayForBonusRecess] = useState(0);
 
-    const [lounchAllowance, setLounchAllowance] = useState(0);
+    const [lunchAllowance, setLunchAllowance] = useState(0);
     const [transAllowance, setTransAllowance] = useState(0);
     const [extraHoursForSem, setExtraHoursForSem] = useState(0);
     const [recessBonusPayForSem, setRecessBonusPayForSem] = useState(0);
@@ -20,8 +24,6 @@ const App = () => {
 
     const [christmasBonus, setChristmasBonus] = useState(0);
     const [profitSharing, setProfitSharing] = useState(0);
-
-    const [semestralChoice, setSemestralChoice] = useState (0);
 
     const salary = (event) => {
         setSalaryBase(event.target.value);
@@ -35,17 +37,12 @@ const App = () => {
         setPayForBonusRecess(event.target.value);
     }
 
-    const christmas = 548696;
-
     //Second semestre: true - First semestre: false.
     useEffect(()=>{
-        salaryBase > 0 ?
-            setSemestralChoice(true) :
-            setSemestralChoice(0)
-
+        
         salaryBase > 0 ? 
-            setLounchAllowance(129828) :
-            setLounchAllowance(0)
+            setLunchAllowance(129828) :
+            setLunchAllowance(0)
 
         salaryBase <= 2725578 && salaryBase > 0 ? 
             setTransAllowance(106454) : 
@@ -88,29 +85,26 @@ const App = () => {
 
     useEffect(() => {    
         salaryBase > 0 ?
-            setTotalSemestralBonus(parseInt(lounchAllowance+transAllowance+extraHoursForSem+recessBonusPayForSem+(parseInt(christmasBonus)/6))+parseInt(salaryBase)+(parseInt(profitSharing))) :
+            setTotalSemestralBonus(parseInt(lunchAllowance+transAllowance+extraHoursForSem+recessBonusPayForSem+(parseInt(christmasBonus)/6))+parseInt(salaryBase)+(parseInt(profitSharing))) :
             setTotalSemestralBonus(0)
 
         salaryBase > 0 ?
             setTotalValueForBonusConcept(parseInt(totalServicesBonus+christmasBonus)+parseInt(totalSemestralBonus)) :
             setTotalValueForBonusConcept(0)
 
-    }, [semestralChoice, lounchAllowance, transAllowance, extraHoursForSem, recessBonusPayForSem, christmasBonus, salaryBase, profitSharing, christmas, totalServicesBonus, totalSemestralBonus])
+    }, [semestralChoice, lunchAllowance, transAllowance, extraHoursForSem, recessBonusPayForSem, christmasBonus, salaryBase, profitSharing, christmas, totalServicesBonus, totalSemestralBonus])
     //___________________________________________________
 
     //Verification (React Hook Form)
-
-    console.log(watch(["firstBox", "secondBox", "thirdBox"]))
-
     const firstBox = watch("firstBox");
     const secondBox = watch("secondBox");
     const thirdBox = watch("thirdBox");
 
     return (
         <div className="container mx-auto w-3/5 border mb-5 rounded">
-            <h1 className="text-2xl p-5 text-center border text-gray-900 bg-gray-200 font-bold">CALCULO PRIMAS SEMESTRALES SEGUNDO SEMESTRE 2021</h1>
+            <h1 className="text-2xl p-5 text-center border text-gray-900 bg-gray-200 font-bold">CALCULO PRIMAS SEMESTRALES {!semestralChoice ? 'PRIMER SEMESTRE' : "SEGUNDO SEMESTRE"} {date.getFullYear()}</h1>
             <div className="flex flex-wrap">
-                <form onSubmit={handleSubmit ((data) => console.log(data))} className="w-full sm:w-1/2 text-center p-5">
+                <div className="w-full sm:w-1/2 text-center p-5">
                     <label className="text-lg font-bold pt-5 m-2 text-center text-gray-600" htmlFor="firstBox">Sueldo básico a Noviembre 30 (*)</label>
                     <br></br>
                     <input {...register("firstBox")} onKeyUp={salary} className="border shadow m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="0" name="firstBox"/> 
@@ -132,10 +126,10 @@ const App = () => {
                     <br></br>
                     <input {...register("thirdBox")} onKeyUp={payForBonus} className="shadow border m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="0"/> 
                     <p className="text-red-500 text-xs italic">{thirdBox == false ? "Ingrese un valor numerico" : ""}</p>
-                </form>
+                </div>
                 <div className="w-full sm:w-1/2 pb-5 px-3">
                     <h1 className="text-lg font-bold pt-2 m-2 text-center text-gray-600">Subsidio de almuerzo con efecto prestacional</h1>
-                    <h1 className="text-2xl font-bold text-center">${lounchAllowance}</h1>
+                    <h1 className="text-2xl font-bold text-center">${lunchAllowance}</h1>
                     
                     <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">Subsidio de transporte</h1>
                     <h1 className="text-2xl font-bold text-center">${transAllowance}</h1>
