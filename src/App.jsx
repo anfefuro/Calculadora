@@ -58,25 +58,25 @@ const App = () => {
 
     useEffect(()=>{
         sumPayForExtraHours > 0 ?
-            setExtraHoursForSem(parseFloat(parseFloat(sumPayForExtraHours) / 6)) :
+            setExtraHoursForSem(parseInt(parseInt(sumPayForExtraHours) / 6)) :
             setExtraHoursForSem(0)
     }, [sumPayForExtraHours])
 
     useEffect(() => {
         payForBonusRecess > 0 ?
-            setRecessBonusPayForSem(parseFloat(parseFloat(payForBonusRecess) / 6)) :
+            setRecessBonusPayForSem(parseInt(parseInt(payForBonusRecess) / 6)) :
             setRecessBonusPayForSem(0)
     }, [payForBonusRecess])
 
     useEffect(() => {
         totalSemestralBonus > 0 ?
-            setTotalServicesBonus(parseFloat(parseFloat(totalSemestralBonus)*0.583333)):
+            setTotalServicesBonus(parseInt(parseInt(totalSemestralBonus)*0.583333)):
             setTotalServicesBonus(0)
     },[totalSemestralBonus])
 
     useEffect(() => {
         semestralChoice ?
-            setChristmasBonus(parseFloat((parseInt(christmas*1.35))+((parseFloat(salaryBase)-(parseFloat(christmas*2)))*0.3))) :
+            setChristmasBonus(parseInt((parseInt(christmas*1.35))+((parseInt(salaryBase)-(parseInt(christmas*2)))*0.3))) :
             setChristmasBonus(0)   
     }, [semestralChoice, salaryBase])
 
@@ -88,11 +88,11 @@ const App = () => {
     
     useEffect(() => {    
         salaryBase > 0 ?
-            setTotalSemestralBonus(parseFloat(lunchAllowance+transAllowance+extraHoursForSem+recessBonusPayForSem+(parseFloat(christmasBonus)/6))+parseFloat(salaryBase)+(parseFloat(profitSharing))) :
+            setTotalSemestralBonus(parseInt(lunchAllowance+transAllowance+extraHoursForSem+recessBonusPayForSem+(parseInt(christmasBonus)/6))+parseInt(salaryBase)+(parseInt(profitSharing))) :
             setTotalSemestralBonus(0)
 
         salaryBase > 0 ?
-            setTotalValueForBonusConcept(parseFloat(totalServicesBonus+christmasBonus)+parseFloat(totalSemestralBonus)) :
+            setTotalValueForBonusConcept(parseInt(totalServicesBonus+christmasBonus)+parseInt(totalSemestralBonus)) :
             setTotalValueForBonusConcept(0)
 
     }, [semestralChoice, lunchAllowance, transAllowance, extraHoursForSem, recessBonusPayForSem, christmasBonus, salaryBase, profitSharing, totalServicesBonus, totalSemestralBonus])
@@ -130,28 +130,28 @@ const App = () => {
                 </div>
                 <div className="w-full sm:w-1/2 pb-5 px-3">
                     <h1 className="text-xl font-bold pt-2 m-2 text-center text-gray-600">Subsidio de almuerzo con efecto prestacional</h1>
-                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(lunchAllowance)}</h1>
+                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(lunchAllowance).replace(/(\.|,)00$/g, '')}</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">Subsidio de transporte</h1>
-                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(transAllowance)}</h1>
+                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(transAllowance).replace(/(\.|,)00$/g, '')}</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">Horas extras en el semestre</h1>
-                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(extraHoursForSem)}</h1>
+                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(extraHoursForSem).replace(/(\.|,)00$/g, '')}</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">Prima de vacaciones pagadas en el semestre</h1>
-                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(recessBonusPayForSem)}</h1>
+                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(recessBonusPayForSem).replace(/(\.|,)00$/g, '')}</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">TOTAL PRIMA SEMESTRAL</h1>
-                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalSemestralBonus)}</h1>
+                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalSemestralBonus).replace(/(\.|,)00$/g, '')}</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">TOTAL PRIMA SERVICIOS</h1>
-                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalServicesBonus)}</h1>
+                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalServicesBonus).replace(/(\.|,)00$/g, '')}</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">{date.getMonth() > 6 ? "BONIFICACION DE NAVIDAD" : false}</h1>
-                    <h1 className="text-2xl font-bold text-center">{date.getMonth() > 6 ? numberFormat2.format(christmasBonus) : false}</h1>
+                    <h1 className="text-2xl font-bold text-center">{date.getMonth() > 6 ? numberFormat2.format(christmasBonus).replace(/(\.|,)00$/g, '') : false}</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">VALOR TOTAL POR CONCEPTO DE PRIMAS</h1>
-                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalValueForBonusConcept)}</h1>
+                    <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalValueForBonusConcept).replace(/(\.|,)00$/g, '')}</h1>
                 </div>
             </div>
         </div>
