@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 
-//-QUITAR ON SUBMIT (done)
-//-PROBAR QUITANDO LOS VALORES RESET DE LOS USEEFFECT MAS LARGOS (done)
-//-LUNCH (done)
-//-CONSTANTES (done)
-//-CUANDO CAMBIE EL SEMESTRE QWUE TAMBIEN CAMBIE EL TITULO (done)
-//-VALIDACION PARA TERCER TITULO (done)
-//-QUE DESAPAREZCA NAVIDAD (done) 
-//-NUMEROS CON PUNTOS Y COMAS (done)
-//-HACER LOS INPUTS MAS GRANDES (done)
-
 const App = () => {
+
+    const funSemestral = () => {
+        date.getMonth() > 6 ?
+            funSemestral(true) :
+            funSemestral(false)
+    };
 
     const options2 = { style: 'currency', currency: 'USD' };
     const numberFormat2 = new Intl.NumberFormat('en-US', options2);
+
     const date = new Date();
     const christmas = 548696;
 
@@ -107,14 +104,13 @@ const App = () => {
 
     return (
         <div className="container mx-auto w-3/5 border mb-5 rounded bg-white">
-            <h1 className="text-2xl p-5 text-center border text-gray-900 bg-gray-200 font-bold">CALCULO PRIMAS SEMESTRALES {date.getMonth() < 6 ? "PRIMER SEMESTRE" : "SEGUNDO SEMESTRE"} {date.getFullYear()}</h1>
+            <h1 className="text-2xl p-5 text-center border text-gray-900 bg-gray-200 font-bold">CALCULO PRIMAS SEMESTRALES {!funSemestral ? "PRIMER SEMESTRE" : "SEGUNDO SEMESTRE"} {date.getFullYear()}</h1>
             <div className="flex flex-wrap">
                 <div className="w-full sm:w-1/2 text-center p-5">
                     <label className="text-xl font-bold pt-5 m-2 text-center text-gray-600" htmlFor="firstBox">Sueldo básico a Noviembre 30 (*)</label>
                     <br></br>
                     <input {...register("firstBox")} onKeyUp={salary} className="py-2 text-xl border shadow m-2 w-9/12 rounded leading-tight focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500" type="number" placeholder="0" name="firstBox"/> 
                     <p className="text-red-500 text-xs italic">{!firstBox ? "Ingrese un valor numerico" : ""}</p>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     <br></br>
 
                     <h1 className="font-bold text-2xl pt-5 text-gray-600">VALORES PROPORCIONALES</h1>
@@ -124,48 +120,38 @@ const App = () => {
                     <br></br>
                     <input {...register("secondBox")} onKeyUp={extraHours} className="text-xl py-2 shadow border m-2 w-9/12 rounded leading-tight focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500" type="number" placeholder="0"/> 
                     <p className="text-red-500 text-xs italic">{!secondBox ? "Ingrese un valor numerico" : ""}</p>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     <br></br>
                     <br></br>
 
-                    <label className="text-xl font-bold pt-5 m-2 text-center text-gray-600" htmlFor="thirdBox">Valor pagado por prima de vacaciones en el semestre {date.getMonth() < 6 ? "(ENERO 1 A JUNIO 30)" : "(JULIO 1 A DICIEMBRE 31)"} </label>
+                    <label className="text-xl font-bold pt-5 m-2 text-center text-gray-600" htmlFor="thirdBox">Valor pagado por prima de vacaciones en el semestre {!funSemestral ? "(ENERO 1 A JUNIO 30)" : "(JULIO 1 A DICIEMBRE 31)"} </label>
                     <br></br>
                     <input {...register("thirdBox")} onKeyUp={payForBonus} className="text-xl py-2 shadow border m-2 w-9/12 rounded leading-tight focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500" type="number" placeholder="0"/> 
                     <p className="text-red-500 text-xs italic">{!thirdBox ? "Ingrese un valor numerico" : ""}</p>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                 </div>
                 <div className="w-full sm:w-1/2 pb-5 px-3">
                     <h1 className="text-xl font-bold pt-2 m-2 text-center text-gray-600">Subsidio de almuerzo con efecto prestacional</h1>
                     <h1 className="text-2xl font-bold text-center">{numberFormat2.format(lunchAllowance)}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">Subsidio de transporte</h1>
                     <h1 className="text-2xl font-bold text-center">{numberFormat2.format(transAllowance)}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">Horas extras en el semestre</h1>
                     <h1 className="text-2xl font-bold text-center">{numberFormat2.format(extraHoursForSem)}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">Prima de vacaciones pagadas en el semestre</h1>
                     <h1 className="text-2xl font-bold text-center">{numberFormat2.format(recessBonusPayForSem)}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">TOTAL PRIMA SEMESTRAL</h1>
                     <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalSemestralBonus)}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">TOTAL PRIMA SERVICIOS</h1>
                     <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalServicesBonus)}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">{date.getMonth() > 6 ? "BONIFICACION DE NAVIDAD" : false}</h1>
                     <h1 className="text-2xl font-bold text-center">{date.getMonth() > 6 ? numberFormat2.format(christmasBonus) : false}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                     
                     <h1 className="text-xl font-bold pt-5 m-2 text-center text-gray-600">VALOR TOTAL POR CONCEPTO DE PRIMAS</h1>
                     <h1 className="text-2xl font-bold text-center">{numberFormat2.format(totalValueForBonusConcept)}</h1>
-                    <h1 className="text-gray-200 text-center">____________________</h1>
                 </div>
             </div>
         </div>
