@@ -9,6 +9,7 @@ const App = () => {
     const maximumSalaryForLunchBenefit = 3480000;
     const lunchBenefitValue = 165764;
     const transportationBenefitValue = 140606;
+    const utilityValue = 1271883;
 
 
     const {register, watch} = useForm ();
@@ -97,11 +98,11 @@ const App = () => {
         console.log('profitSharing', (parseInt(profitSharing)));
 
         salaryBase > 0 ?
-            setTotalSemestralBonus(parseInt(lunchAllowance+transAllowance+extraHoursForSem+recessBonusPayForSem+(parseInt(christmasBonus)/6))+parseInt(salaryBase)+(parseInt(profitSharing))) :
+            setTotalSemestralBonus(parseInt(lunchAllowance+transAllowance+extraHoursForSem+recessBonusPayForSem+(parseInt(christmasBonus)/6))+parseInt(salaryBase)+(parseInt(profitSharing)+parseInt(utilityValue / 6))) :
             setTotalSemestralBonus(0);           
 
         salaryBase > 0 ?
-            setTotalValueForBonusConcept(parseInt(totalServicesBonus+christmasBonus)+parseInt(totalSemestralBonus)) :
+            setTotalValueForBonusConcept(parseInt(totalServicesBonus+christmasBonus)+parseInt(totalSemestralBonus)):
             setTotalValueForBonusConcept(0)
 
     }, [semestralChoice, lunchAllowance, transAllowance, extraHoursForSem, recessBonusPayForSem, christmasBonus, salaryBase, profitSharing, christmas, totalServicesBonus, totalSemestralBonus])
@@ -149,6 +150,13 @@ const App = () => {
                     
                     <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">Horas extras en el semestre</h1>
                     <h1 className="text-2xl font-bold text-center">${extraHoursForSem}</h1>
+
+                    {!semestralChoice && 
+                        <>
+                        <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">VALOR PAGADO POR PARTICIPACION DE UTILIDADES</h1>
+                        <h1 className="text-2xl font-bold text-center">${totalValueForBonusConcept > 0 && parseInt(utilityValue / 6)}</h1>
+                        </>
+                    }
                     
                     <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">Prima de vacaciones pagadas en el semestre</h1>
                     <h1 className="text-2xl font-bold text-center">${recessBonusPayForSem}</h1>
