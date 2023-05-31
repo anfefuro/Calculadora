@@ -6,8 +6,12 @@ const App = () => {
     const date = new Date();
     const semestralChoice = false;
     const christmas = 548696;
+    const maximumSalaryForLunchBenefit = 3480000;
+    const lunchBenefitValue = 165764;
+    const transportationBenefitValue = 140606;
 
-    const {register, watch, handleSubmit} = useForm ();
+
+    const {register, watch} = useForm ();
 
     const [salaryBase, setSalaryBase] = useState(0);
     const [sumPayForExtraHours, setSumPayForExtraHours] = useState(0);
@@ -38,14 +42,13 @@ const App = () => {
     }
 
     //Second semestre: true - First semestre: false.
-    useEffect(()=>{
-        
+    useEffect(()=>{        
         salaryBase > 0 ? 
-            setLunchAllowance(129828) :
+            setLunchAllowance(lunchBenefitValue) :
             setLunchAllowance(0)
 
-        salaryBase <= 2725578 && salaryBase > 0 ? 
-            setTransAllowance(106454) : 
+        salaryBase <= maximumSalaryForLunchBenefit && salaryBase > 0 ? 
+            setTransAllowance(transportationBenefitValue) : 
             setTransAllowance(0)
     }, [salaryBase]) 
     //______________________________________________
@@ -77,16 +80,25 @@ const App = () => {
     }, [semestralChoice, christmas, salaryBase])
 
     useEffect(() => {
-        christmasBonus === 0 ?
+        christmasBonus === 0 && semestralChoice ?
             setProfitSharing(298106) :
             setProfitSharing(0)
     }, [christmasBonus])
     //________________________________________________
 
-    useEffect(() => {    
+    useEffect(() => {   
+        
+        console.log('lunchAllowance', parseInt(lunchAllowance));
+        console.log('transAllowance', parseInt(transAllowance));
+        console.log('extraHoursForSem', parseInt(extraHoursForSem));
+        console.log('recessBonusPayForSem', parseInt(recessBonusPayForSem));
+        console.log('christmasBonus', (parseInt(christmasBonus)/6));
+        console.log('salaryBase', (parseInt(salaryBase)));
+        console.log('profitSharing', (parseInt(profitSharing)));
+
         salaryBase > 0 ?
             setTotalSemestralBonus(parseInt(lunchAllowance+transAllowance+extraHoursForSem+recessBonusPayForSem+(parseInt(christmasBonus)/6))+parseInt(salaryBase)+(parseInt(profitSharing))) :
-            setTotalSemestralBonus(0)
+            setTotalSemestralBonus(0);           
 
         salaryBase > 0 ?
             setTotalValueForBonusConcept(parseInt(totalServicesBonus+christmasBonus)+parseInt(totalSemestralBonus)) :
@@ -105,7 +117,7 @@ const App = () => {
             <h1 className="text-2xl p-5 text-center border text-gray-900 bg-gray-200 font-bold">CALCULO PRIMAS SEMESTRALES {!semestralChoice ? 'PRIMER SEMESTRE' : "SEGUNDO SEMESTRE"} {date.getFullYear()}</h1>
             <div className="flex flex-wrap">
                 <div className="w-full sm:w-1/2 text-center p-5">
-                    <label className="text-lg font-bold pt-5 m-2 text-center text-gray-600" htmlFor="firstBox">Sueldo básico a Noviembre 30 (*)</label>
+                    <label className="text-lg font-bold pt-5 m-2 text-center text-gray-600" htmlFor="firstBox">Sueldo básico a {!semestralChoice ? 'Mayo 31' : "Noviembre 30"} (*)</label>
                     <br></br>
                     <input {...register("firstBox")} onKeyUp={salary} className="border shadow m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="0" name="firstBox"/> 
                     <p className="text-red-500 text-xs italic">{firstBox == false ? "Ingrese un valor numerico" : ""}</p>
@@ -122,7 +134,8 @@ const App = () => {
                     <br></br>
 
                     <label className="text-lg font-bold pt-5 m-2 text-center text-gray-600" htmlFor="thirdBox">Valor pagado por prima de vacaciones en el semestre
-                    (JULIO 1 A DICIEMBRE 31)</label>
+                    <br/>{!semestralChoice ? '(ENERO 1 A JUNIO 30)' : '(JULIO 1 A DICIEMBRE 31)'}
+                    </label>
                     <br></br>
                     <input {...register("thirdBox")} onKeyUp={payForBonus} className="shadow border m-2 w-full rounded leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="0"/> 
                     <p className="text-red-500 text-xs italic">{thirdBox == false ? "Ingrese un valor numerico" : ""}</p>
@@ -146,8 +159,12 @@ const App = () => {
                     <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">TOTAL PRIMA SERVICIOS</h1>
                     <h1 className="text-2xl font-bold text-center">${totalServicesBonus}</h1>
                     
-                    <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">BONIFICACION DE NAVIDAD</h1>
-                    <h1 className="text-2xl font-bold text-center">${christmasBonus}</h1>
+                    {semestralChoice && 
+                        <>
+                        <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">BONIFICACION DE NAVIDAD</h1>
+                        <h1 className="text-2xl font-bold text-center">${christmasBonus}</h1>
+                        </>
+                    }
                     
                     <h1 className="text-lg font-bold pt-5 m-2 text-center text-gray-600">VALOR TOTAL POR CONCEPTO DE PRIMAS</h1>
                     <h1 className="text-2xl font-bold text-center">${totalValueForBonusConcept}</h1>
